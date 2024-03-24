@@ -1,8 +1,8 @@
 import { registerAs } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { BookEntity } from 'src/book/entities/book.entity';
+import { OrderEntity } from 'src/order/entities/order.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
-// import { EmailQueue, FailedQueue, User } from 'src/user/entities/user.entity';
 
 export default registerAs(
   'orm.config',
@@ -13,8 +13,8 @@ export default registerAs(
     username: process.env.DB_USERNAME || 'postgres',
     password: process.env.DB_PASSWORD || 'postgres',
     database: process.env.DB_NAME || 'db_test',
-    entities: [BookEntity, UserEntity],
+    entities: [BookEntity, UserEntity, OrderEntity],
     synchronize: true,
-    ssl: true
+    ssl: false
   }),
 );

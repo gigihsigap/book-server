@@ -15,19 +15,19 @@ export class RolesGuard implements CanActivate {
       const roles = this.reflector.get<Array<keyof typeof ROLES>>(ROLES_KEY, context.getHandler(),);
       const admin = this.reflector.get<Array<string>>(ADMIN_KEY, context.getHandler(),);
       const request = context.switchToHttp().getRequest<Request>();
-      const { roleUser } = request;
+      const { user_role } = request;
       if (roles === undefined) {
         if (!admin) return true;
-        if (admin && roleUser === ROLES.ADMIN) return true;
-        throw new UnauthorizedException('No tienes permisos para acceder a esta ruta.',);
+        if (admin && user_role === ROLES.ADMIN) return true;
+        throw new UnauthorizedException('You do not have permissions to access this route.',);
       }
-      if (roleUser === ROLES.ADMIN) return true;
-      const isAuthorized = roles.some((role) => roleUser === role);
+      if (user_role === ROLES.ADMIN) return true;
+      const isAuthorized = roles.some((role) => user_role === role);
       if (!isAuthorized)
-        throw new UnauthorizedException('No tienes permisos para acceder a esta ruta.',);
+        throw new UnauthorizedException('You do not have permissions to access this route.',);
       return true;
     } catch (error) {
-      throw new InternalServerErrorException('Error al validar los permisos');
+      throw new InternalServerErrorException('Error validating permission.');
     }
   }
 }

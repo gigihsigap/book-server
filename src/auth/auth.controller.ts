@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiQuery, ApiTags } from '@nestjs/swagger/dist/decorators';
 
-import { AuthDto } from '../dto/auth.dto';
-import { AuthService } from '../services/auth.service';
-import { CreateUserDto } from '../../user/dto/user.dto';
+import { AuthDto } from './dto/auth.dto';
+import { AuthService } from './auth.service';
+import { CreateUserDto } from '../user/dto/user.dto';
 import { ResponseMessage } from 'src/common/interfaces/messageRes.interface';
 
 @ApiTags('Auth')

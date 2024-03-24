@@ -4,13 +4,13 @@ import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 
-import { UserEntity } from '../../user/entities/user.entity';
-import { UserService } from '../../user/services/user.service';
-import { IPayload } from '../interfaces/payload.interface';
-import { userToken } from '../../common/utils/user.token';
-import { IUserToken } from '../interfaces/userToken.interface';
-import { CreateUserDto } from '../../user/dto/user.dto';
-import { errorHandler } from '../../common/utils/errorHandler';
+import { UserEntity } from '../user/entities/user.entity';
+import { UserService } from '../user/services/user.service';
+import { IPayload } from './interfaces/payload.interface';
+import { userToken } from '../common/utils/user.token';
+import { IUserToken } from './interfaces/userToken.interface';
+import { CreateUserDto } from '../user/dto/user.dto';
+import { errorHandler } from '../common/utils/errorHandler';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +25,7 @@ export class AuthService {
   public async login(email: string, password: string): Promise<any> {
     try {
       const user = await this.userService.findOneBy({ key: 'email', value: email });
-      if (!user || !(await bcrypt.compare(password, user.password))) throw new NotFoundException('Usuario o contraseña incorrectos');
+      if (!user || !(await bcrypt.compare(password, user.password))) throw new NotFoundException('Incorrect username or password');
       return this.generateJWT(user);
     } catch (error) {
       errorHandler(error, this.logger);

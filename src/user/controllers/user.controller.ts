@@ -7,7 +7,6 @@ import { UpdateUserDto } from '../dto/user.dto';
 import { UserService } from '../services/user.service';
 import { QueryDto } from '../../common/dto/query.dto';
 import { ResponseMessage } from 'src/common/interfaces/messageRes.interface';
-import { AuthService } from 'src/auth/services/auth.service';
 
 import { Request } from 'express';
 
@@ -17,9 +16,8 @@ import { Request } from 'express';
 @Controller('user')
 export class UserController {
   constructor(
-        private readonly userService: UserService,
-        private readonly authService: AuthService,
-    ) { }
+    private readonly userService: UserService,
+  ) { }
 
   @ApiQuery({ name: 'limit', type: 'number', required: false })
   @ApiQuery({ name: 'offset', type: 'number', required: false })
@@ -45,18 +43,15 @@ export class UserController {
 
   @ApiParam({ name: 'id', type: 'string' })
   @Patch(':id')
-  
-  @ApiParam({ name: 'id', type: 'string' })
-  @Patch(':id')
   @UseGuards(AuthGuard)
   public async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
     @Req() req: Request): Promise<ResponseMessage> {
-    const { idUser } = req; // Accessing user information from the request
+    const { user_id } = req; // Accessing user information from the request
     return {
       statusCode: 200,
-      data: await this.userService.update(id, updateUserDto, idUser),
+      data: await this.userService.update(id, updateUserDto, user_id),
     };
   }
 

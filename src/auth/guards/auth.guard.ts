@@ -35,9 +35,8 @@ export class AuthGuard implements CanActivate {
       const user = await this.userService.findOneAuth(managerToken.sub);
 
       // Request context
-      request.idUser = user.id;
-      request.roleUser = user.role;
-      // request.user = user;
+      request.user_id = user.id;
+      request.user_role = user.role;
 
       return true;
     } catch (error) {

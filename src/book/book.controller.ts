@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards, ParseUUIDPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, ParseUUIDPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { BookService } from './book.service';
@@ -8,9 +8,6 @@ import { CreateBookDto, UpdateBookDto } from './dto/book.dto';
 import { DeleteMessage } from '../common/interfaces/deleteRes.interface';
 import { ORDER_ENUM } from '../common/constants';
 import { ResponseMessage } from 'src/common/interfaces/messageRes.interface';
-
-// import { AuthGuard, RolesGuard } from '../auth/guards';
-// import { RolesAccess } from '../auth/decorators';
 
 @ApiTags('Book')
 @ApiBearerAuth()
@@ -51,7 +48,6 @@ export class BookController {
   @ApiParam({ name: 'id', type: 'string' })
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<ResponseMessage> {
-    // return this.bookService.findOne(id);
     return {
       statusCode: 200,
       data: await this.bookService.findOne(id)

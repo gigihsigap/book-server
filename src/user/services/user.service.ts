@@ -1,13 +1,13 @@
-import { Repository } from 'typeorm';
+
 import { BadRequestException, ForbiddenException, Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcrypt';
-
+import { Repository } from 'typeorm';
 import { CreateUserDto, UpdateUserDto } from '../dto/user.dto';
 import { UserEntity } from '../entities/user.entity';
 import { errorHandler } from '../../common/utils/errorHandler';
 import { QueryDto } from '../../common/dto/query.dto';
 import { ResponseMessage } from '../../common/interfaces/messageRes.interface';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -106,8 +106,25 @@ export class UserService {
   public async findOneAuth(id: string): Promise<UserEntity> {
     try {
       const user: UserEntity = await this.userRepository.findOne({ where: { id } });
-      if (!user) throw new UnauthorizedException('User associated with token not found.',);
+      if (!user) throw new UnauthorizedException('User associated with token not found.');
       return user;
+    } catch (error) {
+      errorHandler(error, this.logger);
+    }
+  }
+
+  public async calculatePoint(id: string, userUpdatedFund: number): Promise<UserEntity> {
+    try {  
+      // Update the user data
+      const userUpdated = await this.userRepository.update(id, { points: userUpdatedFund });
+  
+      // Check if the user was successfully updated
+      if (userUpdated.affected === 0) {
+        throw new NotFoundException('User not updated.');
+      }
+  
+      // Return the updated user data
+      return await this.findOne(id);
     } catch (error) {
       errorHandler(error, this.logger);
     }
