@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Repository, Transaction, EntityManager } from 'typeorm';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -34,11 +34,11 @@ export class BookService {
   }
 
   async create(createBookDto: CreateBookDto): Promise<BookEntity> {
-    const { title, writer, cover, price, tags } = createBookDto;
+    const { title, author, cover, price, tags } = createBookDto;
 
     const book = new BookEntity();
     book.title = title;
-    book.writer = writer;
+    book.author = author;
     book.cover = cover;
     book.price = price;
     book.tags = tags;
@@ -50,6 +50,29 @@ export class BookService {
       return book;
     } catch (error) {
       errorHandler(error, this.logger);
+    }
+  }
+
+  async bulkCreate(booksData: CreateBookDto[]): Promise<BookEntity[]> {
+    const books: BookEntity[] = [];
+
+    try {
+      for (const bookData of booksData) {
+        const book = new BookEntity();
+        book.title = bookData.title;
+        book.author = bookData.author;
+        book.cover = bookData.cover;
+        book.price = bookData.price;
+        book.tags = bookData.tags;
+        book.generateSlug();
+        const savedBook = await this.bookRepository.save(book);
+        books.push(savedBook);
+      }
+
+      return books;
+    } catch (error) {
+      errorHandler(error, this.logger);
+      return null;
     }
   }
 

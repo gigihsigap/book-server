@@ -1,37 +1,3 @@
-// import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-// import { BookService } from './book.service';
-// import { CreateBookDto, UpdateBookDto } from './dto/book.dto';
-
-// @Controller('book')
-// export class BookController {
-//   constructor(private readonly bookService: BookService) {}
-
-//   @Post()
-//   create(@Body() createBookDto: CreateBookDto) {
-//     return this.bookService.create(createBookDto);
-//   }
-
-//   @Get()
-//   findAll() {
-//     return this.bookService.findAll();
-//   }
-
-//   @Get(':id')
-//   findOne(@Param('id') id: string) {
-//     return this.bookService.findOne(+id);
-//   }
-
-//   @Patch(':id')
-//   update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
-//     return this.bookService.update(+id, updateBookDto);
-//   }
-
-//   @Delete(':id')
-//   remove(@Param('id') id: string) {
-//     return this.bookService.remove(+id);
-//   }
-// }
-
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards, ParseUUIDPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
@@ -39,7 +5,6 @@ import { BookService } from './book.service';
 
 import { QueryDto } from '../common/dto/query.dto';
 import { CreateBookDto, UpdateBookDto } from './dto/book.dto';
-import { BookEntity } from './entities/book.entity';
 import { DeleteMessage } from '../common/interfaces/deleteRes.interface';
 import { ORDER_ENUM } from '../common/constants';
 import { ResponseMessage } from 'src/common/interfaces/messageRes.interface';
@@ -53,6 +18,14 @@ import { ResponseMessage } from 'src/common/interfaces/messageRes.interface';
 @Controller('book')
 export class BookController {
   constructor(private readonly bookService: BookService) { }
+
+  @Post('bulk')
+  async bulkCreate(@Body() createBookDtos: CreateBookDto[]): Promise<ResponseMessage> {
+    return {
+      statusCode: 200,
+      data: await this.bookService.bulkCreate(createBookDtos)
+    }
+  }
 
   @Post()
   async create(@Body() createBookDto: CreateBookDto): Promise<ResponseMessage> {

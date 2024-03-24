@@ -8,7 +8,7 @@ export class CreateBookDto {
 
   @IsString()
   @ApiProperty()
-  writer: string;
+  author: string;
 
   @IsString()
   @ApiProperty()

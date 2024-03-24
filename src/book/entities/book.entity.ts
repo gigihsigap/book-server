@@ -20,7 +20,7 @@ export class BookEntity {
   title: string;
 
   @Column({ nullable: false })
-  writer: string
+  author: string
 
   @Column({
     nullable: false,
