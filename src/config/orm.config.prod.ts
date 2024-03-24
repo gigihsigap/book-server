@@ -14,5 +14,6 @@ export default registerAs(
     database: process.env.DB_NAME,
     entities: [BookEntity],
     synchronize: false, // Disable this always in production
+    ssl: true
   }),
 );
