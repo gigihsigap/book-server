@@ -6,6 +6,7 @@ import { ROLES } from '../../common/constants';
 import { IUser } from '../interfaces/user.interface';
 
 import { OrderEntity } from '../../order/entities/order.entity';
+import { Min } from 'class-validator';
 
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity implements IUser {
@@ -23,6 +24,7 @@ export class UserEntity extends BaseEntity implements IUser {
     nullable: false,
     default: 100
   })
+  @Min(0, { message: 'Points cannot be negative' })
   points: number;
 
   @Column({ type: 'enum', enum: ROLES })
