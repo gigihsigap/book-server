@@ -1,4 +1,4 @@
-import { BadRequestException, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 
 export const errorHandler = (error: any, logger: Logger): any => {
   logger.error(error);
@@ -10,6 +10,7 @@ export const errorHandler = (error: any, logger: Logger): any => {
   if (error.code === '23514') throw new BadRequestException(error.detail);
   if (error.code === '42601') throw new BadRequestException("Attribute invalid.");
   if (error.status === 404) throw new NotFoundException(error.response);
+  if (error.status === 403) throw new ForbiddenException(error.response);
   if (error.status === 400) throw new NotFoundException(error.response);
   throw new InternalServerErrorException('Internal Server Error');
 };

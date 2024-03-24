@@ -107,13 +107,14 @@ export class BookService {
     }
   }
 
-  async findOneBy({ key, value, }: { key: keyof CreateBookDto; value: any; }) {
-    try {
-      const book: BookEntity = await this.bookRepository.findOne({ where: { [key]: value } });
-      if (!book) throw new NotFoundException();
-      return book;
-    } catch (error) {
-      errorHandler(error, this.logger);
-    }
-  }
+  // Unused method, but it works
+  // async findOneBy({ key, value }: { key: keyof CreateBookDto; value: any; }) {
+  //   try {
+  //     const book: BookEntity = await this.bookRepository.findOne({ where: { [key]: value } });
+  //     if (!book) throw new NotFoundException();
+  //     return book;
+  //   } catch (error) {
+  //     errorHandler(error, this.logger);
+  //   }
+  // }
 }

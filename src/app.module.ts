@@ -10,6 +10,8 @@ import ormConfigProd from './config/orm.config.prod';
 import { BookEntity } from './book/entities/book.entity';
 import { BookController } from './book/book.controller';
 import { BookService } from './book/book.service';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -23,7 +25,10 @@ import { BookService } from './book/book.service';
       useFactory:
         process.env.NODE_ENV !== 'production' ? ormConfig : ormConfigProd,
     }),
-    TypeOrmModule.forFeature([BookEntity])
+    TypeOrmModule.forFeature([BookEntity]),
+    // CommonModule,
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController, BookController],
   providers: [AppService , BookService],

@@ -6,16 +6,14 @@ import {
   Unique,
   UpdateDateColumn,
   BeforeInsert,
-  BeforeUpdate
+  BeforeUpdate,
 } from 'typeorm';
 import slugify from 'slugify';
+import { BaseEntity } from '../../common/entities/base.entity';
 
 @Entity('book')
 @Unique(['title'])
-export class BookEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class BookEntity extends BaseEntity {
   @Column({ nullable: false })
   title: string;
 
@@ -36,12 +34,6 @@ export class BookEntity {
 
   @Column({ nullable: false })
   slug: string;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
 
   @BeforeInsert()
   @BeforeUpdate()
