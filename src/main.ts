@@ -1,10 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { CORS_OPTIONS } from './common/constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api/v1');
+
+  app.setGlobalPrefix('api'); // Set the global prefix for all routes
+  app.enableCors(CORS_OPTIONS); // Enable CORS
 
   const options = new DocumentBuilder()
     .setTitle('Docs example')
