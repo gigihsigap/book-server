@@ -45,6 +45,14 @@ export class BookController {
     }
   }
 
+  @Get('slug')
+  async getAllSlugs(): Promise<ResponseMessage> {
+    return {
+      statusCode: 200,
+      data: await this.bookService.getAllSlugs()
+    }
+  }
+
   @ApiParam({ name: 'id', type: 'string' })
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<ResponseMessage> {

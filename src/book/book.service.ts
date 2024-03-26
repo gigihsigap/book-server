@@ -107,6 +107,22 @@ export class BookService {
     }
   }
 
+  // For SSG
+  async getAllSlugs(): Promise<string[]> {
+    try {
+      const books = await this.bookRepository.find(); // Retrieve all books
+      if (!books || books.length === 0) {
+        throw new NotFoundException('No books found');
+      }
+      // Extract and return only the slugs from the books
+      return books.map(book => book.slug);
+    } catch (error) {
+      // Handle errors
+      console.error('Error fetching all slugs:', error);
+      throw error;
+    }
+  }
+
   // Unused method, but it works
   // async findOneBy({ key, value }: { key: keyof CreateBookDto; value: any; }) {
   //   try {
